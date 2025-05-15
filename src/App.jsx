@@ -64,8 +64,26 @@ export default function App() {
   }, [user]);
 
   return (
-    <div style={{ padding: "1rem", maxWidth: "600px", margin: "0 auto" }}>
+    <div style={{ padding: "1rem", maxWidth: "650px", margin: "0 auto" }}>
       <h1>📅 날짜별 시간표 & 메모</h1>
+
+      {/* 링크 허브 */}
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+        {[
+          { icon: "📘", name: "급식표", url: "https://school.koreacharts.com/school/meals/B000023143/contents.html" },
+          { icon: "💬", name: "클래스룸", url: "http://classroom.google.com/?pli=1" },
+          { icon: "💬", name: "구글 챗", url: "https://mail.google.com/chat/u/0/#chat/home" },
+        ].map((link, i) => (
+          <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{
+            flex: "1 0 30%", border: "1px solid #ccc", borderRadius: "8px",
+            padding: "1rem", textAlign: "center", textDecoration: "none", background: "#f9f9f9", color: "#000"
+          }}>
+            <div style={{ fontSize: "1.5rem" }}>{link.icon}</div>
+            <div>{link.name}</div>
+          </a>
+        ))}
+      </div>
+
       <div style={{ marginBottom: "1rem" }}>
         {user ? (
           <button onClick={handleLogout}>로그아웃</button>
