@@ -46,9 +46,13 @@ export default function App() {
   };
 
   const handleLogin = async () => {
-    const result = await signInWithPopup(auth, provider);
-    setUser(result.user);
-    loadData(selectedDate);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user);
+      loadData(selectedDate);
+    } catch (err) {
+      alert("❌ 로그인 실패: 팝업 차단을 해제했는지 확인하세요.");
+    }
   };
 
   const handleLogout = async () => {
