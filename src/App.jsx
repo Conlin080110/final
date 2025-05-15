@@ -7,14 +7,14 @@ import {
 export default function App() {
   const [user, setUser] = useState(null);
   const [note, setNote] = useState("");
-  const [timetable, setTimetable] = useState(Array(5).fill(""));
+  const [timetable, setTimetable] = useState(Array(7).fill(""));
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const storedNote = localStorage.getItem("note");
     const storedTimetable = JSON.parse(localStorage.getItem("timetable") || "[]");
     setNote(storedNote || "");
-    setTimetable(storedTimetable);
+    setTimetable(storedTimetable.length === 7 ? storedTimetable : Array(7).fill(""));
   }, []);
 
   useEffect(() => {
@@ -26,13 +26,17 @@ export default function App() {
   }, [timetable]);
 
   const handleLogin = async () => {
-    const result = await signInWithPopup(auth, provider);
-    setUser(result.user);
-    const userDoc = await getDoc(doc(db, "users", result.user.uid));
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      setNote(data.note || "");
-      setTimetable(data.timetable || Array(5).fill(""));
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user);
+      const userDoc = await getDoc(doc(db, "users", result.user.uid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        setNote(data.note || "");
+        setTimetable(data.timetable || Array(7).fill(""));
+      }
+    } catch (err) {
+      alert("로그인 실패: 팝업 차단을 해제했는지 확인해주세요.");
     }
   };
 
@@ -102,7 +106,7 @@ export default function App() {
               updated[i] = e.target.value;
               setTimetable(updated);
             }}
-            placeholder={`교시 ${i + 1} 내용 입력`}
+            placeholder={`${i + 1}교시 입력`}
             style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
           />
         ))}
