@@ -7,10 +7,9 @@ const firebaseConfig = {
   apiKey: "AIzaSyATIPDdUsSGEZI1tAItyEjOXh6GgZStbX8",
   authDomain: "sarooom-4e732.firebaseapp.com",
   projectId: "sarooom-4e732",
-  storageBucket: "sarooom-4e732.firebasestorage.app",
+  storageBucket: "sarooom-4e732.appspot.com",
   messagingSenderId: "367375525181",
-  appId: "1:367375525181:web:6ca5ece64cfd39a11e9154",
-  measurementId: "G-JXTQGCJYJR"
+  appId: "1:367375525181:web:6ca5ece64cfd39a11e9154"
 };
 
 const app = initializeApp(firebaseConfig);

@@ -5,6 +5,7 @@ import 'react-calendar/dist/Calendar.css';
 import {
   auth, db, provider, signInWithPopup, signOut, doc, getDoc, setDoc
 } from "./firebase";
+import { schoolEvents } from "./schoolEvents";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -50,8 +51,8 @@ export default function App() {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
       loadData(selectedDate);
-    } catch (err) {
-      alert("❌ 로그인 실패: 팝업 차단을 해제했는지 확인하세요.");
+    } catch {
+      alert("❌ 로그인 실패: 팝업 차단을 해제했는지 확인해주세요.");
     }
   };
 
@@ -71,20 +72,20 @@ export default function App() {
     if (user) loadData(selectedDate);
   }, [user]);
 
+  const eventText = schoolEvents[formatDate(selectedDate)];
+
   return (
     <div style={{ padding: "1rem", maxWidth: "650px", margin: "0 auto" }}>
-      <h1>📅 날짜별 시간표 & 메모</h1>
-
-      {/* 링크 허브 */}
+      <h1>📅 새롬고 학교 어플</h1>
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
         {[
-          { icon: "📘", name: "급식표", url: "https://school.koreacharts.com/school/meals/B000023143/contents.html" },
-          { icon: "💬", name: "클래스룸", url: "http://classroom.google.com/?pli=1" },
+          { icon: "🍱", name: "급식표", url: "https://school.koreacharts.com/school/meals/B000023143/contents.html" },
+          { icon: "🏫", name: "클래스룸", url: "http://classroom.google.com/?pli=1" },
           { icon: "💬", name: "구글 챗", url: "https://mail.google.com/chat/u/0/#chat/home" },
         ].map((link, i) => (
           <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{
             flex: "1 0 30%", border: "1px solid #ccc", borderRadius: "8px",
-            padding: "1rem", textAlign: "center", textDecoration: "none", background: "#f9f9f9", color: "#000"
+            padding: "1rem", textAlign: "center", textDecoration: "none", background: "#f1f1f1", color: "#000"
           }}>
             <div style={{ fontSize: "1.5rem" }}>{link.icon}</div>
             <div>{link.name}</div>
@@ -102,9 +103,12 @@ export default function App() {
 
       <Calendar value={selectedDate} onChange={onDateChange} />
 
-      <h2 style={{ marginTop: "1.5rem" }}>
-        {formatDate(selectedDate)} 일정
-      </h2>
+      <h2 style={{ marginTop: "1.5rem" }}>{formatDate(selectedDate)} 일정</h2>
+      {eventText && (
+        <div style={{ background: "#e0f7fa", padding: "0.75rem", marginBottom: "1rem", borderRadius: "8px" }}>
+          📌 <strong>{eventText}</strong>
+        </div>
+      )}
 
       <h3>🕐 시간표</h3>
       {timetable.map((item, i) => (
